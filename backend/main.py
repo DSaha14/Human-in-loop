@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException, Request, Query
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import uvicorn
@@ -28,6 +28,7 @@ class AnswerRequest(BaseModel):
 
 requests_db = []
 logs = []
+knowledge_base = {}
 
 @app.post("/help")
 def handle_help_request(req: HelpRequest):
@@ -68,6 +69,19 @@ def handle_help_request(req: HelpRequest):
 @app.get("/logs")
 def get_logs():
     return logs
+
+@app.get("/requests")
+def get_requests():
+    return requests_db
+
+@app.get("/knowledge")
+def get_knowledge():
+    return knowledge_base
+
+@app.get("/get-token")
+def get_token(identity: str = Query(...)):
+    # Simulated token logic — replace with actual if needed
+    return {"token": f"fake-token-for-{identity}"}
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
