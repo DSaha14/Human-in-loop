@@ -11,7 +11,7 @@ export default function AskAgent() {
     setResponse("");
 
     try {
-      const res = await axios.get("http://localhost:8000/ask", {
+      const res = await axios.get("https://human-in-loop.onrender.com/ask", {
         params: { q: question },
       });
 
