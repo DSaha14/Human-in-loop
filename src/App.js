@@ -4,7 +4,7 @@ import { AppBar, Toolbar, Typography, Button, Container } from "@mui/material";
 import PendingRequests from "./components/PendingRequests";
 import KnowledgeBase from "./components/KnowledgeBase";
 import VideoRoom from "./components/VideoRoom";
-
+import AskAgent from "./components/AskAgent";
 
 function App() {
   return (
@@ -14,6 +14,9 @@ function App() {
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
             Human-in-the-Loop Supervisor
           </Typography>
+          <Button color="inherit" component={Link} to="/ask">
+            Ask Agent
+          </Button>
           <Button color="inherit" component={Link} to="/">
             Pending Requests
           </Button>
@@ -23,11 +26,11 @@ function App() {
           <Button color="inherit" component={Link} to="/room">
             Video Room
           </Button>
-
         </Toolbar>
       </AppBar>
       <Container sx={{ marginTop: 4 }}>
         <Routes>
+          <Route path="/ask" element={<AskAgent />} />
           <Route path="/" element={<PendingRequests />} />
           <Route path="/knowledge" element={<KnowledgeBase />} />
           <Route path="/room" element={<VideoRoom />} />

@@ -28,7 +28,10 @@ class AnswerRequest(BaseModel):
 
 requests_db = []
 logs = []
-knowledge_base = {}
+knowledge_base = {
+    "what are your opening hours?": "We’re open from 9 AM to 7 PM, Monday to Saturday.",
+    "do you accept walk-ins?": "Yes, we accept walk-ins but prefer scheduled appointments.",
+}
 
 @app.post("/help")
 def handle_help_request(req: HelpRequest):
@@ -55,7 +58,6 @@ def handle_help_request(req: HelpRequest):
     send_message_to_room(room_sid, message)
     log_event(f"📩 Message sent: {message}")
 
-    # Save to DB
     requests_db.append({
         "id": request_id,
         "question": req.question,
@@ -65,6 +67,16 @@ def handle_help_request(req: HelpRequest):
 
     log_event("📝 Request stored as pending")
     return {"request_id": request_id, "room_sid": room_sid}
+
+@app.get("/ask")
+def ask_question(q: str = Query(...)):
+    normalized = q.strip().lower()
+    if normalized in knowledge_base:
+        return {"answer": knowledge_base[normalized]}
+    else:
+        # Simulate automatic help request escalation
+        req = HelpRequest(question=q)
+        return handle_help_request(req)
 
 @app.get("/logs")
 def get_logs():
@@ -80,7 +92,6 @@ def get_knowledge():
 
 @app.get("/get-token")
 def get_token(identity: str = Query(...)):
-    # Simulated token logic — replace with actual if needed
     return {"token": f"fake-token-for-{identity}"}
 
 if __name__ == "__main__":
