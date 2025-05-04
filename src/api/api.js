@@ -1,4 +1,4 @@
-const API_BASE = "http://localhost:8000"; // change this to match your backend
+const API_BASE = "https://human-in-loop.onrender.com"; // change this to match your backend
 
 export async function fetchPendingRequests() {
   const res = await fetch(`${API_BASE}/requests`);
